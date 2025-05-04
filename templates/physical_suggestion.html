@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">🧠 Smart Activity Suggestions</h2>
+
+    <div class="row justify-content-center mt-4">
+        {% for suggestion in suggestions %}
+        <div class="col-md-8 mb-4">
+            <div class="card shadow rounded-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ suggestion }}</h5>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="/activity_history" class="btn btn-primary">🔙 Back to Activity History</a>
+    </div>
+</div>
+{% endblock %}
