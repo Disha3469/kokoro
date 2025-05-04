@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Your Risk Assessment History</h2>
+
+    {% if records %}
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Date</th>
+                <th>Score</th>
+                <th>Risk %</th>
+                <th>Doctor Recommendation</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{ record['date'] }}</td>
+                <td>{{ record['score'] }}/20</td>
+                <td>{{ record['risk_percentage'] }}%</td>
+                <td>
+                    {% if record['risk_percentage'] < 30 %}
+                        Low Risk - Maintain healthy habits. 🌱
+                    {% elif record['risk_percentage'] < 70 %}
+                        Moderate Risk - Focus on regular checkups. 🏥
+                    {% else %}
+                        High Risk - Consult doctor immediately! 🚑
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            No previous risk assessments found.
+        </div>
+    {% endif %}
+
+    <div class="text-center mt-4">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-dark">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}
