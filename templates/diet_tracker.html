@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Diet Tracker</h2>
+
+    <form method="POST" action="{{ url_for('diet_tracker') }}" class="row g-3">
+        <div class="col-md-6">
+            <label class="form-label">Food Name</label>
+            <input type="text" name="food_name" class="form-control" required>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Calories</label>
+            <input type="number" name="calories" class="form-control" required>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Fat (g)</label>
+            <input type="number" name="fat" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Carbs (g)</label>
+            <input type="number" name="carbs" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Protein (g)</label>
+            <input type="number" name="protein" class="form-control">
+        </div>
+        <div class="col-12 mt-3 text-center">
+            <button type="submit" class="btn btn-primary">Add Entry</button>
+        </div>
+    </form>
+
+    <hr class="my-5">
+
+    <h4 class="text-center mb-4">Today's Diet Summary</h4>
+
+    <canvas id="calorieChart" height="100"></canvas>
+
+    <div class="text-center mt-4">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-dark">Back to Dashboard</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('calorieChart').getContext('2d');
+    const calorieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Calories Consumed', 'Remaining Calories'],
+            datasets: [{
+                label: 'Calories',
+                data: [{{ total_calories }}, {{ recommended_calories - total_calories if recommended_calories > total_calories else 0 }}],
+                backgroundColor: ['rgba(54, 162, 235, 0.8)', 'rgba(255, 99, 132, 0.8)'],
+                borderColor: ['#fff', '#fff'],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            cutout: '70%',
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
