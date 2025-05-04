@@ -2,6 +2,10 @@
 {% block content %}
 <div class="container mt-5">
     <h2 class="text-center mb-4">Your Risk Assessment History</h2>
+<div class="my-5">
+    <h4 class="text-center">Risk Level Progress Chart</h4>
+    <canvas id="riskChart" height="100"></canvas>
+</div>
 
     {% if records %}
     <table class="table table-bordered table-striped">
@@ -32,6 +36,33 @@
             {% endfor %}
         </tbody>
     </table>
+<script>
+    const ctx = document.getElementById('riskChart').getContext('2d');
+    const riskChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ dates | safe }},
+            datasets: [{
+                label: 'Risk Percentage',
+                data: {{ percentages | safe }},
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.3
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100
+                }
+            }
+        }
+    });
+</script>
+
     {% else %}
         <div class="alert alert-info" role="alert">
             No previous risk assessments found.
