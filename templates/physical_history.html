@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">📅 Physical Activities History</h2>
+
+    <div class="table-responsive mt-4">
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Date</th>
+                    <th>Exercise Minutes</th>
+                    <th>Games Played</th>
+                    <th>Steps Walked</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record['date'] }}</td>
+                    <td>{{ record['exercise_minutes'] }}</td>
+                    <td>{{ record['games_played'] }}</td>
+                    <td>{{ record['steps_walked'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if records %}
+    <div class="mt-5">
+        <h4 class="text-center">📈 Activity Trends</h4>
+        <canvas id="activityTrendChart" height="120"></canvas>
+    </div>
+    {% endif %}
+</div>
+
+{% if records %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const labels = [{% for record in records %}'{{ record["date"] }}',{% endfor %}];
+    const exerciseData = [{% for record in records %}{{ record["exercise_minutes"] }},{% endfor %}];
+    const stepsData = [{% for record in records %}{{ record["steps_walked"] }},{% endfor %}];
+
+    const ctx = document.getElementById('activityTrendChart').getContext('2d');
+    const activityTrendChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels.reverse(),
+            datasets: [
+                {
+                    label: 'Exercise Minutes',
+                    data: exerciseData.reverse(),
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    tension: 0.3
+                },
+                {
+                    label: 'Steps Walked',
+                    data: stepsData.reverse(),
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    tension: 0.3
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
+{% endif %}
+{% endblock %}
