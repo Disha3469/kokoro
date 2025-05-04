@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5 text-center">
+    <h2>Your Risk Assessment Result</h2>
+    <h3 class="mt-4">Risk Level: {{ risk_percentage }}%</h3>
+
+    {% if risk_percentage < 30 %}
+        <div class="alert alert-success mt-4" role="alert">
+            Low Risk! Keep maintaining a healthy lifestyle. 🥦🏋️‍♂️
+        </div>
+    {% elif risk_percentage < 70 %}
+        <div class="alert alert-warning mt-4" role="alert">
+            Moderate Risk. Please follow preventive care and healthy practices. 🏃‍♂️
+        </div>
+    {% else %}
+        <div class="alert alert-danger mt-4" role="alert">
+            High Risk! Immediate doctor consultation is advised! 🏥
+        </div>
+    {% endif %}
+
+    <a href="{{ url_for('dashboard') }}" class="btn btn-dark mt-3">Back to Dashboard</a>
+</div>
+{% endblock %}
