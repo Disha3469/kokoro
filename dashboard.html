@@ -1,0 +1,66 @@
+{% extends "base.html" %} {% block content %}
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Welcome to Healthcare Tracker!</h2>
+
+  <div class="row">
+    <!-- Risk Level Tracker -->
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-lg p-3 rounded-4">
+        <div class="card-body text-center">
+          <h4 class="card-title">Risk Level Tracker</h4>
+          <p class="card-text">20 Questions to measure your health risk.</p>
+          <a href="{{ url_for('risk_tracker') }}" class="btn btn-primary"
+            >Start Risk Tracker</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Diet Tracker -->
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-lg p-3 rounded-4">
+        <div class="card-body text-center">
+          <h4 class="card-title">Diet Tracker</h4>
+          <p class="card-text">
+            Track daily diet & calories with recommendations.
+          </p>
+          <a href="{{ url_for('diet_tracker') }}" class="btn btn-success"
+            >Start Diet Tracker</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Physical Activity Tracker -->
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-lg p-3 rounded-4">
+        <div class="card-body text-center">
+          <h4 class="card-title">Physical Activity Tracker</h4>
+          <p class="card-text">Log your exercises and activities.</p>
+          <a href="{{ url_for('activity_tracker') }}" class="btn btn-warning"
+            >Start Activity Tracker</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Health Tracker -->
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-lg p-3 rounded-4">
+        <div class="card-body text-center">
+          <h4 class="card-title">Health Tracker</h4>
+          <p class="card-text">Measure your BP, Cholesterol, ECG, and more!</p>
+          <a href="{{ url_for('health_tracker') }}" class="btn btn-danger"
+            >Start Health Tracker</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logout Button -->
+  <div class="text-center mt-4">
+    <a href="{{ url_for('logout') }}" class="btn btn-dark">Logout</a>
+  </div>
+</div>
+{% endblock %}
