@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">🏃 Physical Activities Tracker</h2>
+    
+    <form method="POST" class="mt-4">
+        <div class="mb-3">
+            <label for="exercise_minutes" class="form-label">Minutes of Exercise Today:</label>
+            <input type="number" class="form-control" name="exercise_minutes" required>
+        </div>
+        <div class="mb-3">
+            <label for="games_played" class="form-label">Games Played (comma separated):</label>
+            <input type="text" class="form-control" name="games_played" required>
+        </div>
+        <div class="mb-3">
+            <label for="steps_walked" class="form-label">Steps Walked Today:</label>
+            <input type="number" class="form-control" name="steps_walked" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Save Activity</button>
+    </form>
+
+    {% if today_record %}
+    <div class="mt-5">
+        <h4 class="text-center">Today's Summary</h4>
+        <canvas id="activityChart" height="100"></canvas>
+    </div>
+    {% endif %}
+</div>
+
+{% if today_record %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('activityChart').getContext('2d');
+    const activityChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Exercise Minutes', 'Steps Walked'],
+            datasets: [{
+                label: 'Today\'s Activity',
+                data: [{{ today_record['exercise_minutes'] }}, {{ today_record['steps_walked'] }}],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 99, 132, 0.8)'
+                ],
+                borderColor: [
+                    '#fff',
+                    '#fff'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endif %}
+{% endblock %}
