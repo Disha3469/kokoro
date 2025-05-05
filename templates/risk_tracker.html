@@ -6,7 +6,7 @@
         <div class="row">
             {% for i in range(1, 21) %}
             <div class="col-md-6 mb-3">
-                <label for="q{{ i }}" class="form-label">Question {{ i }}:</label>
+                <label for="question{{ i }}" class="form-label">Question {{ i }}:</label>
                 <select class="form-select" id="q{{ i }}" name="q{{ i }}" required>
                     <option value="">Choose an answer</option>
                     <option value="0">No</option>
