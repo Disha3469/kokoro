@@ -54,38 +54,6 @@
         }
     });
 </script>
-
-<h4 class="text-center mt-5">Macro Breakdown</h4>
-<canvas id="macroChart" height="100"></canvas>
-
-<script>
-    const macroCtx = document.getElementById('macroChart').getContext('2d');
-    const macroChart = new Chart(macroCtx, {
-        type: 'pie',
-        data: {
-            labels: ['Carbs', 'Proteins', 'Fats'],
-            datasets: [{
-                data: [{{ total_carbs }}, {{ total_protein }}, {{ total_fat }}],
-                backgroundColor: [
-                    'rgba(255, 206, 86, 0.8)', // Carbs
-                    'rgba(75, 192, 192, 0.8)', // Proteins
-                    'rgba(255, 99, 132, 0.8)'  // Fats
-                ],
-                borderColor: ['#fff', '#fff', '#fff'],
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'bottom'
-                }
-            }
-        }
-    });
-</script>
-
 {% extends "base.html" %}
 {% block content %}
 <div class="container mt-5">
@@ -158,3 +126,65 @@
     });
 </script>
 {% endblock %}
+
+
+<h4 class="text-center mt-5">Macro Breakdown</h4>
+<canvas id="macroChart" height="100"></canvas>
+
+<script>
+    const macroCtx = document.getElementById('macroChart').getContext('2d');
+    const macroChart = new Chart(macroCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Carbs', 'Proteins', 'Fats'],
+            datasets: [{
+                data: [{{ total_carbs }}, {{ total_protein }}, {{ total_fat }}],
+                backgroundColor: [
+                    'rgba(255, 206, 86, 0.8)', // Carbs
+                    'rgba(75, 192, 192, 0.8)', // Proteins
+                    'rgba(255, 99, 132, 0.8)'  // Fats
+                ],
+                borderColor: ['#fff', '#fff', '#fff'],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
+
+<script>
+    const totalCalories = {{ total_calories }};
+    const recommendedCalories = {{ recommended_calories }};
+
+    if (totalCalories > recommendedCalories) {
+        alert("⚠️ You have exceeded your recommended calorie intake!");
+    }
+</script>
+
+<script>
+    document.querySelector('input[name="food_name"]').addEventListener('input', function() {
+        const query = this.value;
+        if (query.length > 2) {
+            fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?query=${query}&api_key=YOUR_API_KEY`)
+                .then(response => response.json())
+                .then(data => {
+                    // Example: Auto-fill calorie/macro data
+                    const food = data.foods[0];
+                    if (food) {
+                        document.querySelector('input[name="calories"]').value = food.calories;
+                        document.querySelector('input[name="fat"]').value = food.fat || 0;
+                        document.querySelector('input[name="carbs"]').value = food.carbs || 0;
+                        document.querySelector('input[name="protein"]').value = food.protein || 0;
+                    }
+                })
+                .catch(error => console.error('Error fetching food data:', error));
+        }
+    });
+</script>
